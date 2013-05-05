@@ -23,16 +23,17 @@ module.exports = (app, server) ->
         repo = io.of(repo)
 
         repo.on 'connection', (socket)->
-          socket.join page if page
+          socket.join socket.handshake.query.page if socket.handshake.query.page
 
-        repo.on 'disconnect', (socket,data)->
+        repo.on 'disconnect', (socket)->
+          socket.leave socket.handshake.query.page if socket.handshake.query.page
           # save mongoDB
 
         repo.on 'timeout', (data)->
           # save mongoDB
 
-        repo.on 'sync', (data)->
+        repo.on 'sync', (socket,data)->
           repo.broadcast.emit 'update',data #通知
-          repo.broadcast.to(page).emit 'sync',data #同期
+          repo.broadcast.to(socket.handshake.query.page).emit 'sync',data #同期
 
       callback(null,true)
