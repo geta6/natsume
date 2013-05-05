@@ -1,9 +1,20 @@
 {
-  "name": "application-name",
+  "name": "natsume",
   "version": "0.0.1",
   "private": true,
+  "main": "natsume",
+  "readmeFilename": "README.md",
+  "author": [
+    "nikezono",
+    "geta6"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geta6/natsume.git"
+  },
   "scripts": {
-    "start": "node app.js"
+    "start": "node natsume -e production",
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha --compilers coffee:coffee-script"
   },
   "dependencies": {
     "coffee-script": "*",
@@ -28,5 +39,14 @@
     "stylus": "*",
     "nib": "*",
     "socket.io": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "supertest": "*"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
   }
 }

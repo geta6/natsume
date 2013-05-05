@@ -1,4 +1,4 @@
-exports.RepoEvent = (app) ->
+exports.PageEvent = (app) ->
 
   {Repo} = app.get 'models'
 
