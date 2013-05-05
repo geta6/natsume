@@ -65,7 +65,17 @@ if (cluster.isMaster) {
   cluster.on('listening', function(worker, address) {
     console.log('>>', 'HTTPServer#start', '@'+process.pid);
   });
-  // exec('[[ -s `which open` ]] && open http://localhost:3000');
+  // Memory Monitor
+  setInterval(function () {
+    var memusage = process.memoryUsage();
+    console.info([
+      'report  -  Physical: ',
+      parseInt(memusage.rss / 1024 / 10.24) / 100,
+      '  -  Heap: ',
+      parseInt(memusage.heapUsed / 1024 / 10.24) / 100,
+      ' / ' + parseInt(memusage.heapTotal / 1024 / 10.24) / 100
+    ].join(''));
+  }, 5 * 1000);
 } else {
   server = http.createServer(app);
   require(path.resolve('config', 'io'))(app, server);
