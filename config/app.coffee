@@ -37,6 +37,7 @@ app.use connect.static
 app.use app.get('helper').logger()
 app.use express.bodyParser()
 app.use express.methodOverride()
+app.use require path.resolve 'config', 'response'
 # app.use express.cookieParser()
 # app.use express.session
 #   secret: 'keyboardcat'
