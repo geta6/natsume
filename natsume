@@ -54,8 +54,10 @@ process.env.FORK = process.env.FORK || argv.f || argv.FORK || cpus;
 
 // Main Application
 var app = require(path.resolve('config', 'app'))
+  , io = require(path.resolve('config', 'io'))(app)
   , env = app.get('env')
-  , port = app.get('port');
+  , port = app.get('port')
+  , exec = require('child_process').exec;
 
 // Cluster Server
 if (cluster.isMaster) {
@@ -69,13 +71,10 @@ if (cluster.isMaster) {
   cluster.on('listening', function(worker, address) {
     console.log('>>', 'HTTPServer#start', '@'+process.pid);
   });
+  exec('[[ -s `which open` ]] && open http://localhost:3000');
 } else {
   server = http.createServer(app);
   io = require('socket.io').listen(server);
-  io.set("store", new RedisStore({
-      redisPub: pub
-    , redisSub: sub
-    , redisClient: client
-  }));
+  io.set("store", new RedisStore({ redisPub: pub, redisSub: sub, redisClient: client }));
   server.listen(port);
 }
