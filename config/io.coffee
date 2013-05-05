@@ -14,11 +14,26 @@ module.exports = (app, server) ->
   # ここにio実装
   io.sockets.on 'connection', (socket) ->
 
-    socket.on 'join', (path)->
-      socket.join path.repo
-      socket.set 'repo', path.repo
-      if path.page
-        socket.join path.page
-        socket.set 'page', path.page
+    socket.on 'join', (data)->
+      socket.join data.repo
+      socket.set 'repo', data.repo
+      if data.page
+        socket.join data.page
+        socket.set 'page', data.page
 
+
+    socket.on 'sync', (data) ->
+      socket.get 'repo', (err,repo) ->
+        #同じRepoをwatchしているユーザにemit
+        socket.broadcast.to(repo).emit 'update', data
+        socket.get 'page', (err,page) ->
+          return null if err
+          # 同じrepoで同じpageなら?
+
+
+    socket.on 'disconnect', (data) ->
+      # save mongoDB
+
+    socket.on 'timeout', (data) ->
+      # save mongoDB
 
