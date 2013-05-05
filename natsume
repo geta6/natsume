@@ -12,6 +12,11 @@ var path = require('path')
   , http = require('http')
   , argv = require('optimist').argv
   , cpus = require('os').cpus().length
+  , RedisStore = require('socket.io/lib/stores/redis')
+  , redis = require('socket.io/node_modules/redis')
+  , pub = redis.createClient()
+  , sub = redis.createClient()
+  , client = redis.createClient()
   , hooker = require('hooker')
   , cluster = require('cluster');
 
@@ -65,5 +70,12 @@ if (cluster.isMaster) {
     console.log('>>', 'HTTPServer#start', '@'+process.pid);
   });
 } else {
-  http.createServer(app).listen(port);
+  server = http.createServer(app);
+  io = require('socket.io').listen(server);
+  io.set("store", new RedisStore({
+      redisPub: pub
+    , redisSub: sub
+    , redisClient: client
+  }));
+  server.listen(port);
 }
