@@ -12,11 +12,6 @@ var path = require('path')
   , http = require('http')
   , argv = require('optimist').argv
   , cpus = require('os').cpus().length
-  , RedisStore = require('socket.io/lib/stores/redis')
-  , redis = require('socket.io/node_modules/redis')
-  , pub = redis.createClient()
-  , sub = redis.createClient()
-  , client = redis.createClient()
   , hooker = require('hooker')
   , cluster = require('cluster');
 
@@ -54,7 +49,6 @@ process.env.FORK = process.env.FORK || argv.f || argv.FORK || cpus;
 
 // Main Application
 var app = require(path.resolve('config', 'app'))
-  , io = require(path.resolve('config', 'io'))(app)
   , env = app.get('env')
   , port = app.get('port')
   , exec = require('child_process').exec;
@@ -71,10 +65,9 @@ if (cluster.isMaster) {
   cluster.on('listening', function(worker, address) {
     console.log('>>', 'HTTPServer#start', '@'+process.pid);
   });
-  exec('[[ -s `which open` ]] && open http://localhost:3000');
+  // exec('[[ -s `which open` ]] && open http://localhost:3000');
 } else {
   server = http.createServer(app);
-  io = require('socket.io').listen(server);
-  io.set("store", new RedisStore({ redisPub: pub, redisSub: sub, redisClient: client }));
+  require(path.resolve('config', 'io'))(app, server);
   server.listen(port);
 }
