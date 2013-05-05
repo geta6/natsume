@@ -1,0 +1,31 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "coffee-script": "*",
+    "hooker": "*",
+    "optimist": "*",
+    "underscore": "*",
+    "underscore.string": "*",
+    "moment": "*",
+    "async": "*",
+    "mime": "*",
+    "direquire": "*",
+    "express": "*",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "connect-mongo": "*",
+    "connect-assets": "*",
+    "connect-stream": "*",
+    "marked": "*",
+    "st": "*",
+    "jade": "*",
+    "stylus": "*",
+    "nib": "*"
+  }
+}
