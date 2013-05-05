@@ -12,28 +12,27 @@ module.exports = (app, server) ->
     redisClient: client
 
   # ここにio実装
-  io.sockets.on 'connection', (socket) ->
+  io.configure ->
+    # handshake時のnamespaceからroomを分ける
+    io.set 'authorization', (handshake,callback) ->
+      repo = handshake.query.repo
+      page = handshake.query.page
+      console.log 'repo:#{repo} page:#{page}'
 
-    socket.on 'join', (data)->
-      socket.join data.repo
-      socket.set 'repo', data.repo
-      if data.page
-        socket.join data.page
-        socket.set 'page', data.page
+      unless io.namespaces.hasOwnProperty(repo)
+        repo = io.of(repo)
 
+        repo.on 'connection', (socket)->
+          socket.join page if page
 
-    socket.on 'sync', (data) ->
-      socket.get 'repo', (err,repo) ->
-        #同じRepoをwatchしているユーザにemit
-        socket.broadcast.to(repo).emit 'update', data
-        socket.get 'page', (err,page) ->
-          return null if err
-          # 同じrepoで同じpageなら?
+        repo.on 'disconnect', (socket,data)->
+          # save mongoDB
 
+        repo.on 'timeout', (data)->
+          # save mongoDB
 
-    socket.on 'disconnect', (data) ->
-      # save mongoDB
+        repo.on 'sync', (data)->
+          repo.broadcast.emit 'update',data #通知
+          repo.broadcast.to(page).emit 'sync',data #同期
 
-    socket.on 'timeout', (data) ->
-      # save mongoDB
-
+      callback(null,true)
