@@ -15,9 +15,9 @@ connect =
 
 # Database
 if process.env.NODE_ENV is 'production'
-  mongoose.connect 'mongodb://localhost/wicket'
+  mongoose.connect 'mongodb://localhost/natsume'
 else
-  mongoose.connect 'mongodb://localhost/wicket-dev'
+  mongoose.connect 'mongodb://localhost/natsume-dev'
 
 # Main Application
 app = express()

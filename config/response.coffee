@@ -1,6 +1,6 @@
 module.exports = (req, res, next) ->
 
-  res.api = (code = 200, body = {}, message = null) ->
+  res.return = (code = 200, body = {}, message = null) ->
     if body.message
       message = body.message
       delete body.message
