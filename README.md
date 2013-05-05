@@ -7,6 +7,11 @@
   * 編集合戦の平和的終結を目指す女神
 * 設計には体感応答性能と手軽さが重視されるべき?
 
+* socketがあるうちはon memory(app.coffeeとかに持たせる)
+* socketが全部disconnectしたらsaveする
+  * timeoutをもうける
+  * 2分とか30sとか、何も無ければ保存してmemoryをクリアする
+
 ## Route
 
 ### `/`
