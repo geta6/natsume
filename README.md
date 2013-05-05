@@ -1,4 +1,6 @@
 
+![](https://raw.github.com/geta6/natsume/master/public/img/natsume.jpg)
+
 # Natsume
 
 * websocketを使用したすごくてかわいいwiki
