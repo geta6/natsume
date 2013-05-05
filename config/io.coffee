@@ -12,3 +12,13 @@ module.exports = (app, server) ->
     redisClient: client
 
   # ここにio実装
+  io.sockets.on 'connection', (socket) ->
+
+    socket.on 'join', (path)->
+      socket.join path.repo
+      socket.set 'repo', path.repo
+      if path.page
+        socket.join path.page
+        socket.set 'page', path.page
+
+
