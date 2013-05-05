@@ -71,3 +71,4 @@ if (cluster.isMaster) {
   require(path.resolve('config', 'io'))(app, server);
   server.listen(port);
 }
+
