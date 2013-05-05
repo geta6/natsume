@@ -3,12 +3,27 @@ html
   head
     title natsume
     !=css('master')
-  body
-    #stat
-    block content
     script(src='/lib/jquery-2.0.0.min.js')
     script(src='/lib/underscore-min.js')
     script(src='/lib/underscore.string.min.js')
     script(src='/lib/moment.min.js')
     script(src='/socket.io/socket.io.js')
+  body
+    #stat.exterior
+      .interior
+        span by geta6
+        span 0.67 rate
+        span 18 minutes ago
+
+    #head.exterior
+      .interior
+        span= req.params.repo
+        if req.params.page
+          span ::
+          span= req.params.page
+
+    #body.exterior
+      .interior
+        block content
+
     !=js('script')

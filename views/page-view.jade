@@ -1,12 +1,8 @@
 extends layout
 
 block content
-  .container
-    .bind.stud
-      .data.head
-        .each Page View
-      .data.body
-        .each: img(src='/img/natsume.jpg')
-      form.data.body(method='POST')
-        .each: input(type='submit', value='edit this page')
-
+  if repo
+    p.debug RepoID: #{repo._id}
+  if page
+    p.debug PageID: #{page._id}
+    div!= page.html

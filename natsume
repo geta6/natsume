@@ -38,6 +38,7 @@ if (argv.h) {
   console.log('  -p "port"       set listening port (3000 default)');
   console.log('  -f "fork"       process concurrency nums ('+cpus+' default)');
   console.log('  -e "env"        set application environment (development default)');
+  console.log('  -m "interval"   report memory usage info (5 default)');
   console.log('  -h              show this message');
   process.exit(1);
 }
@@ -46,6 +47,7 @@ if (argv.h) {
 process.env.NODE_ENV = process.env.NODE_ENV || argv.e || argv.env || 'development';
 process.env.PORT = process.env.PORT || argv.p || argv.port || 3000;
 process.env.FORK = process.env.FORK || argv.f || argv.FORK || cpus;
+reportMemoryUsageInterval = argv.m || 5
 
 // Main Application
 var app = require(path.resolve('config', 'app'))
@@ -66,16 +68,18 @@ if (cluster.isMaster) {
     console.log('>>', 'HTTPServer#start', '@'+process.pid);
   });
   // Memory Monitor
-  setInterval(function () {
-    var memusage = process.memoryUsage();
-    console.info([
-      'report  -  Physical: ',
-      parseInt(memusage.rss / 1024 / 10.24) / 100,
-      '  -  Heap: ',
-      parseInt(memusage.heapUsed / 1024 / 10.24) / 100,
-      ' / ' + parseInt(memusage.heapTotal / 1024 / 10.24) / 100
-    ].join(''));
-  }, 5 * 1000);
+  if(argv.m) {
+    setInterval(function () {
+      var memusage = process.memoryUsage();
+      console.info([
+        'report  -  Physical: ',
+        parseInt(memusage.rss / 1024 / 10.24) / 100,
+        '  -  Heap: ',
+        parseInt(memusage.heapUsed / 1024 / 10.24) / 100,
+        ' / ' + parseInt(memusage.heapTotal / 1024 / 10.24) / 100
+      ].join(''));
+    }, reportMemoryUsageInterval * 1000);
+  }
 } else {
   server = http.createServer(app);
   require(path.resolve('config', 'io'))(app, server);

@@ -17,7 +17,7 @@ module.exports = (app, server) ->
     io.set 'authorization', (handshake,callback) ->
       repo = handshake.query.repo
       page = handshake.query.page
-      console.log 'repo:#{repo} page:#{page}'
+      console.log "repo:#{repo} page:#{page}"
 
       unless io.namespaces.hasOwnProperty(repo)
         repo = io.of(repo)

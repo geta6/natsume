@@ -1,9 +1,8 @@
 extends layout
 
 block content
-  .container
-    .bind.stud
-      .data.head
-        .each Repo View
-      .data.body
-        .each: img(src='/img/natsume.jpg')
+  if repo
+    p.debug RepoID: #{repo._id}
+  if page
+    p.debug PageID: #{page._id}
+    div!= page.html

@@ -16,7 +16,7 @@ RepoSchema = new Mongo.Schema
   index: { type: String, default: 'index' }
   pages: [{ type: Mongo.Schema.Types.ObjectId, ref: 'pages' }]
   claim: { type: String, default: '' }
-  limit: { type: String, default: '' }
+  limit: { type: String, default: 'open' }
 
 RepoSchema.statics.findByTitle = (title, done) ->
   @findOne title: title, {}, {}, (err, repo) ->
@@ -30,16 +30,6 @@ RepoSchema.statics.findPage = (title, done) ->
     return (done err, null) unless repo
     return done err, (_.find repo.pages), (page) ->
       return page.title is title.page
-
-RepoSchema.statics.removePage = (title, done) ->
-  title or= { repo: '', page: '' }
-  @findOne title: title.repo, {}, { populate: 'pages' }, (err, repo) ->
-    console.error err if err
-    repo.pages = _.filter repo.pages, (page) ->
-      return if page.title is title.page then no else yes
-    repo.save (err, repo) ->
-      console.error err if err
-      return done err, repo
 
 RepoSchema.path('limit').validate (limit) ->
   return no if limit isnt 'view' and limit isnt 'edit' and limit isnt 'open'

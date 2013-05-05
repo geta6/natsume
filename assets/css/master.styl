@@ -1,3 +1,4 @@
+@import url('http://fonts.googleapis.com/css?family=Roboto:400,100,700')
 @import 'nib'
 
 global-reset()
@@ -6,73 +7,62 @@ global-reset()
 *
   box-sizing border-box
 
+body
+  font 12px/16px Helvetica, Arial, Sans-Serif
+  color #333333
+  -webkit-text-size-adjust 100%
+
+input, textarea
+  appearance none
+  display block
+  padding 10px
+  width 100%
+  border 1px solid #CCC
+  background white
+
+textarea
+  height 100px
+
+button
+  display block
+  margin 0 auto
+
+.center
+  margin 0 auto
+
+.exterior
+  width 100%
+
+.interior
+  margin 0 auto
+  padding 0 10px
+  width 80%
+
+.debug
+  margin-bottom 5px
+  padding 0 5px
+  color #A44
+  background #F2F2F2
+  border 1px solid #CCC
+  font-family monospace
+
 #stat
-  position fixed
-  top 0
-  left 0
-  right 0
   height 20px
-  background #33526F
+  font-size 10px
+  line-height 20px
+  span
+    margin-right 10px
 
-// *
-//   box-sizing border-box
+#head
+  height 50px
+  font-size 36px
+  font-weight 100
+  line-height 50px
+  span
+    margin-right 5px
 
-// body
-//   padding 75px 0 25px 0
-//   font 10px Helvetica, Arial, Sans-Serif
-//   color #333333
-//   -webkit-text-size-adjust 100%
-// a
-//   color inherit
-//   text-decoration none
-
-// audio, video
-//   display block
-//   margin 10px 0
-//   width 100%
-
-// video
-//   background black
-
-// button, input
-//   appearance none
-//   margin 0
-//   padding 5px 10px
-//   outline none
-//   border 1px solid #CCCCCC
-//   border-radius 3px
-//   color inherit
-//   font-size inherit
-//   font-family inherit
-
-// button
-//   display inline-block
-//   cursor pointer
-//   min-height 30px
-//   border 1px solid #CACACA
-//   background linear-gradient(top, #FAFAFA, #EAEAEA)
-//   color #333333
-//   font-weight bold
-//   &:hover
-//     border-color #CCCCCC
-//     background linear-gradient(top, #EAEAEA, #DADADA)
-//   &:active
-//     background #DADADA
-//   &.pushed
-//     border 1px solid #3A7FC6
-//     background linear-gradient(top, #77ACDE, #3A7FC6)
-//     color #FFFFFF
-
-// input
-//   display block
-//   &:focus
-//     border 1px solid #51A7E8
-//   &[type=text], &[type=password]
-//     width 100%
-//     height 36px
-//   &[type=button], &[type=submit]
-//     @extend button
-
-
-// @import 'common'
-// @import 'unique'
+#body
+  padding 10px
+  background #EEE
+  border-top 1px solid #CCC
+  border-bottom 1px solid #CCC

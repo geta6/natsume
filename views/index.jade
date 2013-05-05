@@ -1,14 +1,22 @@
 extends layout
 
 block content
-  .container
-    .bind.stud
-      .data.head
-        .each Na
-        .each Tsu
-        .each Me
-      .data.body
-        .each Welcome to natsume
-      .data.body
-        .each: img(src='/img/natsume.jpg')
-
+  input#title(placeholder='repo title')
+  textarea#text(placeholder='markdown here')
+  br
+  button#create create repo
+  br
+  img(src='/img/natsume.jpg')
+  :coffeescript
+    $ ->
+      ($ '#create').on 'click', ->
+        repo = ($ '#title').val()
+        if repo
+          $.ajax "/#{repo}/index",
+            type: 'PUT'
+            data: text: ($ '#text').val()
+            error: (xhr) ->
+              alert 'errors on server'
+              console.error xhr
+            success: (res) ->
+              location.href = "/#{repo}"
