@@ -3,14 +3,20 @@ exports.PageEvent = (app) ->
   {Repo} = app.get 'models'
 
   show: (req, res) ->
-    res.render 'repos', tmp: 'show'
+    Repo.findPage req.params, (err, page) ->
+      res.render 'page-view', page
 
   save: (req, res) ->
-    res.render 'repos', tmp: 'save'
+    Repo.findPage req.params, (err, page) ->
+      # page.text = req.body.text
+      page.save ->
+        res.render 'page-view', page
 
   edit: (req, res) ->
-    res.render 'repos', tmp: 'edit'
+    Repo.findPage req.params, (err, page) ->
+      res.render 'page-edit', page
 
   delete: (req, res) ->
-    res.render 'repos', tmp: 'delete'
+    Repo.findPage req.params, (err, repo) ->
+      res.redirect "/#{req.params.repo}"
 

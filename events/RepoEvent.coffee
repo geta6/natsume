@@ -3,14 +3,27 @@ exports.RepoEvent = (app) ->
   {Repo} = app.get 'models'
 
   show: (req, res) ->
-    res.render 'repos', tmp: 'show'
+    # Repoを表示する
+    Repo.findByTitle req.params.repo, (err, repo) ->
+      res.render 'repo-view', repo
 
   save: (req, res) ->
-    res.render 'repos', tmp: 'save'
+    # 編集されたRepoの情報を保存する
+    Repo.findByTitle req.params.repo, (err, repo) ->
+      # repo.claim = app.get('helper').shasum req.body.password
+      repo.save (err, repo) ->
+        console.error err if err
+        res.render 'repo-view', repo
 
   edit: (req, res) ->
-    res.render 'repos', tmp: 'edit'
+    # Repoのエディタを表示する
+    Repo.findByTitle req.params.repo, (err, repo) ->
+      res.render 'repo-edit', repo
 
   delete: (req, res) ->
-    res.render 'repos', tmp: 'delete'
+    # Repoを削除する
+    Repo.findByTitle req.params.repo, (err, repo) ->
+      repo.remove (err) ->
+        console.error err if err
+        res.redirect '/'
 
