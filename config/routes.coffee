@@ -20,3 +20,4 @@ module.exports = (app) ->
   app.post   '/:repo/:page', PageEvent.edit
   app.put    '/:repo/:page', PageEvent.save
   app.delete '/:repo/:page', PageEvent.delete
+
