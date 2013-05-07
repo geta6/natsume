@@ -1,7 +1,5 @@
 RedisStore = require('socket.io/lib/stores/redis')
 redis = require('socket.io/node_modules/redis')
-async = require('async')
-_ = require('underscore')
 pub = redis.createClient()
 sub = redis.createClient()
 client = redis.createClient()
@@ -37,9 +35,14 @@ module.exports = (app, server) ->
 
         socket.on 'disconnect', (socket) ->
           console.log "disconnect"
-          # save mongoDB
+          console.log socket #=> typeof String. "socket end"
+          ###
+          leave出来ない
+          socket.get 'page', (err,page) ->
+            console.log page
+            socket.leave page
           # room内で最後のclientであればsave
-
+          ###
         socket.on 'timeout', (data) ->
           # save mongoDB
 

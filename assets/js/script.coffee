@@ -20,7 +20,9 @@ socket.of("/#{repo}")
 
   # 同ページで編集が行われた
   .on 'sync', (data)->
-
+    console.log 'sync'
+    console.log data
   # 同repoで編集が行われた
   .on 'update', (data) ->
-
+    console.log 'update'
+    console.log data
