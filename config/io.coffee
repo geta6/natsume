@@ -22,8 +22,10 @@ module.exports = (app, server) ->
       namespace.on "connection", (socket) ->
 
         socket.set 'repo', namespace.name
+
         socket.on 'join page', (page) ->
           socket.join page
+          socket.set 'page', page
 
         socket.on 'sync', (data) ->
           # emit to sockets in same repo
@@ -33,19 +35,20 @@ module.exports = (app, server) ->
             socket.get 'page', (err,page)->
               io.of("/#{repo}").in(page).emit 'sync', data
 
-        socket.on 'disconnect', (socket) ->
-          console.log "disconnect"
-          console.log socket #=> typeof String. "socket end"
-          ###
-          leave出来ない
-          socket.get 'page', (err,page) ->
-            console.log page
-            socket.leave page
-          # room内で最後のclientであればsave
-          ###
+        socket.on 'disconnect', ->
+          socket.get 'repo', (err,repo) ->
+            socket.get 'page', (err,page) ->
+              socket.leave page if page # この処理よりも前に既にleaveが終わっている感
+
+              # room内で最後のclientであればsave
+              if io.of(repo).clients(page).length is 0
+                console.log 'save db'
+                #save db
+
         socket.on 'timeout', (data) ->
-          # save mongoDB
+          console.log data
+          # save db
 
 
-    # auth true
+    # authorization true
     callback null, true

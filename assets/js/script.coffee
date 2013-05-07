@@ -4,7 +4,10 @@ console.log window.location.pathname
 repo = (window.location.pathname.split "/")[1]
 page = (window.location.pathname.split "/")[2]
 
-sio = io.connect("/#{repo}?repo=#{repo}")
+sio = io.connect "/#{repo}?repo=#{repo}",
+  'reconnect': true,
+  'reconnection delay': 500, #タイムアウト時間(default 500ms)
+
 socket = sio.socket
 
 socket.of("/#{repo}")
@@ -22,7 +25,14 @@ socket.of("/#{repo}")
   .on 'sync', (data)->
     console.log 'sync'
     console.log data
+
   # 同repoで編集が行われた
   .on 'update', (data) ->
     console.log 'update'
     console.log data
+
+    ###
+  # timeout時にsaveさせる
+  .on 'reconnect', ->
+    socket.emit 'timeout', 'timeout' #db save
+    ###
